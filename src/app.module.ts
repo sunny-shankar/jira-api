@@ -2,9 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { v4 } from 'uuid';
+import { JiraModule } from './jira/jira.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     LoggerModule.forRoot({
       pinoHttp: {
         customProps: (req, res) => ({
@@ -19,7 +22,8 @@ import { v4 } from 'uuid';
         },
       },
     }),
-    ConfigModule.forRoot(),
+    JiraModule,
+    HttpModule,
   ],
   controllers: [],
   providers: [],
