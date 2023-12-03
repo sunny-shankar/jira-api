@@ -40,7 +40,13 @@ export class JiraService {
     return {
       success: true,
       code: 'SUCCESS',
-      data: { ...response, unassigned, total },
+      data: {
+        ...response,
+        unassigned,
+        total: {
+          count: total,
+        },
+      },
     };
   }
 
