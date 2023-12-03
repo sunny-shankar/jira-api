@@ -5,7 +5,7 @@ import { JiraService } from './jira.service';
 export class JiraController {
   constructor(private readonly jiraService: JiraService) {}
   @Post()
-  test() {
+  getIssueStatistics() {
     return this.jiraService.getIssueStatistics();
   }
 }
