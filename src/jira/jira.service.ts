@@ -21,14 +21,27 @@ export class JiraService {
     for (const issue of assignedIssue.issues) {
       const assignee = issue['fields']['assignee'];
       if (assignee.displayName in response) {
-        response[assignee.displayName] += 1;
+        response[assignee.displayName]['count'] += 1;
       } else {
-        response[assignee.displayName] = 1;
+        response[assignee.displayName] = {};
+        response[assignee.displayName]['count'] = 1;
       }
       assignedCount += 1;
     }
-    const unassigned = unassignedIssue.issues.length;
-    return { ...response, unassigned, total: assignedCount + unassigned };
+    let unassigned = { count: unassignedIssue.issues.length };
+    const total = assignedCount + unassigned.count;
+    unassigned['percentage'] = ((unassigned.count / total) * 100).toFixed(2);
+    for (const user in response) {
+      response[user]['percentage'] = (
+        (response[user]['count'] / total) *
+        100
+      ).toFixed(2);
+    }
+    return {
+      success: true,
+      code: 'SUCCESS',
+      data: { ...response, unassigned, total },
+    };
   }
 
   async getUnassignedIssue(): Promise<any> {
